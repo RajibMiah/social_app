@@ -2,9 +2,12 @@ import bodyParser from "body-parser";
 import express from "express";
 import "reflect-metadata";
 import AppDataSource from "./data-source";
+
 const userRouter = require("./routers/users");
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+require("dotenv").config();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
