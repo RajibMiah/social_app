@@ -1,8 +1,8 @@
 import bodyParser from "body-parser";
 import express from "express";
 import "reflect-metadata";
+import errorHandler from "../src/util/errorHandler";
 import AppDataSource from "./data-source";
-
 const userRouter = require("./routers/users");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +23,7 @@ AppDataSource.initialize()
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+app.use(errorHandler);
 app.use("/api/users", userRouter);
 
 app.listen(PORT, () => {
