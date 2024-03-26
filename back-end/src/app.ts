@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import "reflect-metadata";
 import AppDataSource from "./data-source";
-
+const userRouter = require("./routers/users");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -20,6 +20,7 @@ AppDataSource.initialize()
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+app.use("/api/users", userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port http:localhost:${PORT}`);
