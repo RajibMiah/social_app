@@ -11,7 +11,7 @@ export class User {
   @PrimaryGeneratedColumn("uuid")
   id!: number;
 
-  @Column()
+  @Column({ nullable: true })
   age!: number;
 
   @Column({ nullable: false, unique: true, length: 30 })
@@ -23,10 +23,10 @@ export class User {
   @Column({ nullable: false })
   password!: string;
 
-  @Column()
+  @Column({ nullable: true })
   biography!: string;
 
-  @Column()
+  @Column({ nullable: true })
   isAdmin!: boolean;
 
   @CreateDateColumn()

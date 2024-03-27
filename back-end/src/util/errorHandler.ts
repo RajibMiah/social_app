@@ -12,4 +12,4 @@ const errorHandler = (
   res.status(500).json({ error: err });
 };
 
-module.exports = errorHandler;
+module.exports = { errorHandler };

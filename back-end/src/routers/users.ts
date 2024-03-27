@@ -1,9 +1,10 @@
 import express from "express";
-import { getRepository } from "typeorm";
+import dataSource from "../data-source";
 import { User } from "../entity/User";
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 // USER SIGN UP CONTROLLER FUNCTION
 
@@ -16,15 +17,13 @@ router.post("/signup", async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userRepository = getRepository(User);
+    const userRepository = dataSource.getRepository(User);
     const newUser = userRepository.create({
       username,
       email,
       password: hashedPassword,
     });
     await userRepository.save(newUser);
-
-    console.log("User created successfully:", newUser);
 
     res.status(201).json({
       message: "User created successfully",
@@ -42,7 +41,9 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     // Replace this with your actual User model and query
-    const user = "found"; //await User.find({ username: req.body.username });
+    const userRepository = <any>await dataSource.getRepository(User);
+
+    const user = await userRepository.find({ username: req.body.username });
 
     if (!user || user.length === 0) {
       return res.status(401).json({
@@ -51,9 +52,8 @@ router.post("/login", async (req, res) => {
     }
 
     const isValidPassword = await bcrypt.compare(
-      req.body.password
-      // Replace this with the hashed password stored in your User model
-      // user[0].password
+      req.body.password,
+      user[0].password
     );
 
     if (!isValidPassword) {
@@ -64,13 +64,13 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign(
       {
-        // Replace these with actual user details if needed
-        // username: user[0].username,
-        // userId: user[0]._id,
+        username: user[0].username,
+        userId: user[0].id,
       },
-      process.env.JWT_SECRET,
+      //process.env.JWT_SECRET,
+      "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQ",
       {
-        expiresIn: "2h",
+        expiresIn: "5h",
       }
     );
 
