@@ -4,7 +4,6 @@ import { User } from "../entity/User";
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 
 // USER SIGN UP CONTROLLER FUNCTION
 

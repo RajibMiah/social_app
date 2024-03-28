@@ -1,37 +1,32 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from "typeorm";
+// User entity
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Follow } from "./Follow";
+import { Message } from "./Message";
+import { Post } from "./Post";
 
-@Entity()
+@Entity("User")
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ nullable: true })
-  age!: number;
-
-  @Column({ nullable: false, unique: true, length: 30 })
+  @Column()
   username!: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column()
   email!: string;
 
   @Column({ nullable: false })
   password!: string;
 
-  @Column({ nullable: true })
-  biography!: string;
+  @OneToMany(() => Post, (post) => post.user)
+  posts!: Post[];
 
-  @Column({ nullable: true })
-  isAdmin!: boolean;
+  @OneToMany(() => Message, (message) => message.sender)
+  sentMessages!: Message[];
 
-  @CreateDateColumn()
-  created_at!: Date;
+  @OneToMany(() => Message, (message) => message.receiver)
+  receivedMessages!: Message[];
 
-  @UpdateDateColumn()
-  updated_at!: Date;
+  @OneToMany(() => Follow, (follow) => follow.follower)
+  following!: Follow[];
 }
