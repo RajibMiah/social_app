@@ -11,20 +11,19 @@ require("dotenv").config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log("Data Source has been initialized!");
-  })
-  .catch((err: any) => {
-    console.error("Error during Data Source initialization", err);
-  });
-
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 // app.use(errorHandler);
 app.use("/api/users", userRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port http:localhost:${PORT}`);
-});
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port http:localhost:${PORT}`);
+    });
+  })
+  .catch((err: any) => {
+    console.error("Error during Data Source initialization", err);
+  });

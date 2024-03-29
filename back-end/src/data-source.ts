@@ -1,12 +1,5 @@
 import path from "path";
 import { DataSource } from "typeorm";
-import { Comment } from "./entity/Comment";
-import { Conversation } from "./entity/Conversation";
-import { Follow } from "./entity/Follow";
-import { Like } from "./entity/Like";
-import { Message } from "./entity/Message";
-import { Post } from "./entity/Post";
-import { User } from "./entity/User";
 const AppDataSource = new DataSource({
   type: (process.env.DATABASE_TYPE as any) || "postgres",
   host: process.env.DATABASE_SERVER_HOST || "localhost",
@@ -16,8 +9,8 @@ const AppDataSource = new DataSource({
   database: process.env.DATABASE_NAME || "social_app",
   synchronize: true,
   logging: false,
-  entities: [User, Follow, Post, Like, Comment, Conversation, Message],
-  // entities: [path.join(__dirname, "entities", "*.{ts,js}")],
+  // entities: [User, Follow, Post, Like, Comment, Conversation, Message],
+  entities: [path.join(__dirname, "entities", "*.{ts,js}")],
   migrations: [path.join(__dirname, "migrations", "*.{ts,js}")],
   migrationsTableName: "custom_migration_table",
 });

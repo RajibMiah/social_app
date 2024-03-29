@@ -1,6 +1,6 @@
 import express from "express";
 import dataSource from "../data-source";
-import { User } from "../entity/User";
+import { User } from "../entities/User";
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
