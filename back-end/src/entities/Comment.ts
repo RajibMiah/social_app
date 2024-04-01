@@ -5,7 +5,7 @@ import { User } from "./User";
 
 @Entity("Comment")
 export class Comment {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: number;
 
   @Column()
@@ -16,6 +16,4 @@ export class Comment {
 
   @ManyToOne(() => Post)
   post!: Post;
-
-  // You can add more attributes as needed
 }

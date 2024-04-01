@@ -4,7 +4,7 @@ import { User } from "./User";
 
 @Entity("Message")
 export class Message {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: number;
 
   @Column()

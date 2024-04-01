@@ -10,11 +10,28 @@ const jwt = require("jsonwebtoken");
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
-  if (!username || !email) {
-    res.status(400).json({ error: "Name and email are required fields" });
-  }
+  // const userRepository = (await dataSource.getRepository(User)) as any;
+  // const user = (await userRepository.findOne({ email: email })) as any;
 
   try {
+    const query =
+      'SELECT username , email FROM "User" WHERE email = $1 LIMIT 1';
+    const user = await dataSource.query(query, [email]);
+
+    if (!username || !email) {
+      return res
+        .status(400)
+        .json({ error: "Name and email are required fields" });
+    }
+
+    if (
+      user.length > 0 &&
+      user[0].username === username &&
+      user[0].email === email
+    ) {
+      return res.json({ message: "User already exists" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const userRepository = dataSource.getRepository(User);
     const newUser = userRepository.create({
@@ -24,15 +41,10 @@ router.post("/signup", async (req, res) => {
     });
     await userRepository.save(newUser);
 
-    res.status(201).json({
-      message: "User created successfully",
-    });
+    return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    console.error("Error occured", error);
-
-    res.status(500).json({
-      error: "Internal server error",
-    });
+    console.error("Error occurred", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 });
 

@@ -6,7 +6,7 @@ import { Post } from "./Post";
 
 @Entity("User")
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: number;
 
   @Column()
