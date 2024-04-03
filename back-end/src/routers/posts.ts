@@ -1,6 +1,7 @@
+export {};
+const postControllers = require("../controllers/postControllers");
 const express = require("express");
 const router = express.Router();
-const postControllers = require("../controllers/postControllers");
 const { verifyToken, optionallyVerifyToken } = require("../middleware/auth");
 
 router.get("/", optionallyVerifyToken, postControllers.getPosts);
