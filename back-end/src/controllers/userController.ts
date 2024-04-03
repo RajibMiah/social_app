@@ -28,14 +28,16 @@ const register = async (req: Request, res: Response) => {
       throw new Error("All input required");
     }
 
+    const saltRounds = 10;
     const normalizedEmail = email.toLowerCase();
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     const query =
       'SELECT username , email FROM "User" WHERE email = $1 LIMIT 1' as any;
     const existingUser = await dataSource.query(query, [email]);
 
-    if (existingUser) {
+    console.log("existing user", existingUser);
+    if (existingUser.length > 0) {
       throw new Error("Email and username must be unique");
     }
 
@@ -45,7 +47,12 @@ const register = async (req: Request, res: Response) => {
       password: hashedPassword,
     });
 
-    const token = jwt.sign(buildToken(user), process.env.TOKEN_KEY);
+    console.log("user", user);
+
+    const token = jwt.sign(
+      buildToken(user),
+      "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQ"
+    );
 
     return res.json(getUserDict(token, user));
   } catch (err: any) {
@@ -80,7 +87,10 @@ const login = async (req: Request, res: Response) => {
       throw new Error("Email or password incorrect");
     }
 
-    const token = jwt.sign(buildToken(user), process.env.TOKEN_KEY);
+    const token = jwt.sign(
+      buildToken(user),
+      "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQ"
+    );
 
     return res.json(getUserDict(token, user));
   } catch (err: any) {

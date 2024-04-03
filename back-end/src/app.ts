@@ -3,7 +3,7 @@ import express from "express";
 import "reflect-metadata";
 import AppDataSource from "./data-source";
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const users = require("./routers/users");
 const posts = require("./routers/posts");
 const cors = require("cors");
